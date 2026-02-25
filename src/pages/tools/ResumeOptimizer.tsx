@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useToast } from "@/hooks/use-toast";
+import { streamAI } from "@/lib/ai-stream";
 
 const ResumeOptimizer = () => {
   const [resumeText, setResumeText] = useState("");
@@ -21,12 +22,18 @@ const ResumeOptimizer = () => {
       return;
     }
     setLoading(true);
-    // Simulate AI processing
-    await new Promise((r) => setTimeout(r, 2500));
-    setResult(
-      `# Optimized Resume for ${jobTitle}\n\n## Professional Summary\nResults-driven professional with proven expertise in ${jobTitle.toLowerCase()}-related competencies. Demonstrated track record of delivering measurable outcomes and driving organizational success through strategic initiatives.\n\n## Key Achievements\n• Increased team productivity by 35% through implementation of streamlined workflows\n• Led cross-functional projects resulting in $2.1M revenue growth\n• Developed and deployed scalable solutions serving 50K+ users\n• Reduced operational costs by 28% through process automation\n\n## ATS Keywords Added\n✅ Leadership & Strategy\n✅ Data-Driven Decision Making\n✅ Cross-functional Collaboration\n✅ Process Optimization\n✅ Stakeholder Management\n\n## Recommendations\n1. Add quantifiable metrics to each bullet point\n2. Include industry-specific keywords from target job descriptions\n3. Use action verbs at the beginning of each accomplishment\n4. Keep formatting ATS-friendly (no tables, images, or complex layouts)`
-    );
-    setLoading(false);
+    setResult("");
+
+    await streamAI({
+      toolType: "resume-optimize",
+      inputs: { "Target Job Title": jobTitle, "Resume": resumeText },
+      onDelta: (text) => setResult((prev) => prev + text),
+      onDone: () => setLoading(false),
+      onError: (error) => {
+        toast({ title: "Error", description: error, variant: "destructive" });
+        setLoading(false);
+      },
+    });
   };
 
   const handleCopy = () => {
@@ -48,38 +55,20 @@ const ResumeOptimizer = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Input */}
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium text-foreground mb-1.5 block">Target Job Title</label>
-              <Input
-                placeholder="e.g. Senior Software Engineer"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
-                className="bg-card border-border"
-              />
+              <Input placeholder="e.g. Senior Software Engineer" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} className="bg-card border-border" />
             </div>
             <div>
               <label className="text-sm font-medium text-foreground mb-1.5 block">Your Resume</label>
-              <Textarea
-                placeholder="Paste your full resume text here..."
-                value={resumeText}
-                onChange={(e) => setResumeText(e.target.value)}
-                className="bg-card border-border min-h-[300px] resize-none"
-              />
+              <Textarea placeholder="Paste your full resume text here..." value={resumeText} onChange={(e) => setResumeText(e.target.value)} className="bg-card border-border min-h-[300px] resize-none" />
             </div>
             <Button onClick={handleOptimize} disabled={loading} className="w-full shadow-glow">
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Optimizing...
-                </>
-              ) : (
-                "Optimize Resume"
-              )}
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Optimizing...</> : "Optimize Resume"}
             </Button>
           </div>
 
-          {/* Output */}
           <div className="glass-card rounded-xl p-5 relative">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-display font-semibold text-foreground text-sm">AI Output</h3>
@@ -91,9 +80,7 @@ const ResumeOptimizer = () => {
               )}
             </div>
             {result ? (
-              <div className="prose prose-invert prose-sm max-w-none whitespace-pre-wrap text-sm text-secondary-foreground leading-relaxed">
-                {result}
-              </div>
+              <div className="whitespace-pre-wrap text-sm text-secondary-foreground leading-relaxed">{result}</div>
             ) : (
               <div className="flex items-center justify-center h-[300px] text-muted-foreground text-sm">
                 {loading ? "Analyzing your resume..." : "Results will appear here"}
