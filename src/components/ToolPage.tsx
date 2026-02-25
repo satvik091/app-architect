@@ -6,15 +6,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useToast } from "@/hooks/use-toast";
+import { streamAI } from "@/lib/ai-stream";
 
 interface ToolPageProps {
   title: string;
   description: string;
+  toolType: string;
   inputFields: { key: string; label: string; placeholder: string; type: "input" | "textarea" }[];
-  generateResult: (inputs: Record<string, string>) => string;
 }
 
-const ToolPage = ({ title, description, inputFields, generateResult }: ToolPageProps) => {
+const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) => {
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,9 +29,18 @@ const ToolPage = ({ title, description, inputFields, generateResult }: ToolPageP
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 2000));
-    setResult(generateResult(inputs));
-    setLoading(false);
+    setResult("");
+
+    await streamAI({
+      toolType,
+      inputs,
+      onDelta: (text) => setResult((prev) => prev + text),
+      onDone: () => setLoading(false),
+      onError: (error) => {
+        toast({ title: "Error", description: error, variant: "destructive" });
+        setLoading(false);
+      },
+    });
   };
 
   const handleCopy = () => {

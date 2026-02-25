@@ -3,7 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import ResumeOptimizer from "./pages/tools/ResumeOptimizer";
 import JDAligner from "./pages/tools/JDAligner";
@@ -17,23 +20,26 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/tools/resume" element={<ResumeOptimizer />} />
-          <Route path="/tools/jd-align" element={<JDAligner />} />
-          <Route path="/tools/interview" element={<InterviewPrep />} />
-          <Route path="/tools/cover-letter" element={<CoverLetter />} />
-          <Route path="/tools/linkedin" element={<LinkedInOptimizer />} />
-          <Route path="/tools/planner" element={<JobPlanner />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/tools/resume" element={<ProtectedRoute><ResumeOptimizer /></ProtectedRoute>} />
+            <Route path="/tools/jd-align" element={<ProtectedRoute><JDAligner /></ProtectedRoute>} />
+            <Route path="/tools/interview" element={<ProtectedRoute><InterviewPrep /></ProtectedRoute>} />
+            <Route path="/tools/cover-letter" element={<ProtectedRoute><CoverLetter /></ProtectedRoute>} />
+            <Route path="/tools/linkedin" element={<ProtectedRoute><LinkedInOptimizer /></ProtectedRoute>} />
+            <Route path="/tools/planner" element={<ProtectedRoute><JobPlanner /></ProtectedRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

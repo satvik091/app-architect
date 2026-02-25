@@ -1,5 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { FileText, Target, MessageSquare, Mail, Linkedin, Calendar, Sparkles, LayoutDashboard } from "lucide-react";
+import { FileText, Target, MessageSquare, Mail, Linkedin, Calendar, Sparkles, LayoutDashboard, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -13,6 +15,7 @@ const navItems = [
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -45,12 +48,15 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           })}
         </nav>
 
-        <div className="glass-card rounded-xl p-4 mt-4">
-          <p className="text-xs text-muted-foreground mb-2">Free Plan · 10 requests/day</p>
-          <div className="w-full h-1.5 rounded-full bg-secondary">
-            <div className="h-full w-3/10 rounded-full bg-gradient-primary" style={{ width: "30%" }} />
-          </div>
-          <p className="text-xs text-muted-foreground mt-1.5">3 of 10 used</p>
+        <div className="space-y-3 mt-4">
+          {user && (
+            <div className="px-3">
+              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            </div>
+          )}
+          <Button variant="ghost" size="sm" onClick={signOut} className="w-full justify-start text-muted-foreground hover:text-foreground">
+            <LogOut className="w-4 h-4 mr-2" /> Sign Out
+          </Button>
         </div>
       </aside>
 
@@ -63,6 +69,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
             <span className="font-display text-base font-bold text-foreground">JOBFIT AI</span>
           </Link>
+          <Button variant="ghost" size="sm" onClick={signOut}>
+            <LogOut className="w-4 h-4" />
+          </Button>
         </header>
 
         {/* Mobile nav */}
