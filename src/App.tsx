@@ -15,6 +15,7 @@ import CoverLetter from "./pages/tools/CoverLetter";
 import LinkedInOptimizer from "./pages/tools/LinkedInOptimizer";
 import JobPlanner from "./pages/tools/JobPlanner";
 import ResumeRanker from "./pages/tools/ResumeRanker";
+import SavedDocuments from "./pages/SavedDocuments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/tools/linkedin" element={<ProtectedRoute><LinkedInOptimizer /></ProtectedRoute>} />
             <Route path="/tools/planner" element={<ProtectedRoute><JobPlanner /></ProtectedRoute>} />
             <Route path="/tools/resume-ranker" element={<ProtectedRoute><ResumeRanker /></ProtectedRoute>} />
+            <Route path="/saved" element={<ProtectedRoute><SavedDocuments /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
