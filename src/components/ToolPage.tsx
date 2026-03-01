@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Loader2, Copy, Check } from "lucide-react";
+import { ArrowLeft, Loader2, Copy, Check, Save, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,8 @@ import PdfUpload from "@/components/PdfUpload";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useToast } from "@/hooks/use-toast";
 import { streamAI } from "@/lib/ai-stream";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface InputField {
   key: string;
@@ -28,7 +30,9 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [saving, setSaving] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleGenerate = async () => {
     const missing = inputFields.some((f) => !inputs[f.key]?.trim());
@@ -55,6 +59,33 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
     navigator.clipboard.writeText(result);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSave = async () => {
+    if (!result || !user) return;
+    setSaving(true);
+    const { error } = await supabase.from("saved_documents").insert({
+      user_id: user.id,
+      document_type: toolType,
+      title: `${title} - ${new Date().toLocaleDateString()}`,
+      content: result,
+    });
+    setSaving(false);
+    toast(error
+      ? { title: "Save failed", description: error.message, variant: "destructive" }
+      : { title: "Saved!", description: "Output saved to your documents." }
+    );
+  };
+
+  const handleDownload = () => {
+    if (!result) return;
+    const blob = new Blob([result], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${toolType}-${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -131,10 +162,19 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-display font-semibold text-foreground text-sm">AI Output</h3>
               {result && (
-                <Button variant="ghost" size="sm" onClick={handleCopy} className="h-8">
-                  {copied ? <Check className="w-3.5 h-3.5 mr-1" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
-                  {copied ? "Copied" : "Copy"}
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button variant="ghost" size="sm" onClick={handleCopy} className="h-8">
+                    {copied ? <Check className="w-3.5 h-3.5 mr-1" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
+                    {copied ? "Copied" : "Copy"}
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={handleSave} disabled={saving} className="h-8">
+                    {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-1" />}
+                    Save
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={handleDownload} className="h-8">
+                    <Download className="w-3.5 h-3.5 mr-1" /> Download
+                  </Button>
+                </div>
               )}
             </div>
             {result ? (
