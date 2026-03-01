@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { FileText, Target, MessageSquare, Mail, Linkedin, Calendar, Sparkles, LayoutDashboard, LogOut, Archive } from "lucide-react";
+import { FileText, Target, MessageSquare, Mail, Linkedin, Calendar, Sparkles, LayoutDashboard, LogOut, Archive, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
@@ -11,6 +11,7 @@ const navItems = [
   { icon: Mail, label: "Cover Letter", href: "/tools/cover-letter" },
   { icon: Linkedin, label: "LinkedIn", href: "/tools/linkedin" },
   { icon: Calendar, label: "Planner", href: "/tools/planner" },
+  { icon: BarChart3, label: "Resume Ranker", href: "/tools/resume-ranker"),
   { icon: Archive, label: "Saved", href: "/saved" },
 ];
 
