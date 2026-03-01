@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FileText, Target, MessageSquare, Mail, Linkedin, Calendar, ArrowRight } from "lucide-react";
+import { FileText, Target, MessageSquare, Mail, Linkedin, Calendar, ArrowRight, BarChart3 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 
 const tools = [
@@ -44,6 +44,13 @@ const tools = [
     description: "Get a structured 7-day plan for your job search activities.",
     href: "/tools/planner",
     color: "from-emerald-500/20 to-green-500/20",
+  },
+  {
+    icon: BarChart3,
+    title: "Resume Ranker",
+    description: "Rank multiple resumes against a job description by similarity and fit.",
+    href: "/tools/resume-ranker",
+    color: "from-rose-500/20 to-pink-500/20",
   },
 ];
 

@@ -3,11 +3,11 @@ import ToolPage from "@/components/ToolPage";
 const InterviewPrep = () => (
   <ToolPage
     title="Interview Prep"
-    description="Generate 10 role-specific interview questions with structured STAR-format answers."
+    description="Upload a job description PDF and your experience to generate STAR-format interview prep."
     toolType="interview-prep"
     inputFields={[
       { key: "Target Role", label: "Target Role", placeholder: "e.g. Product Manager at Google", type: "input" },
-      { key: "Experience Summary", label: "Your Experience Summary", placeholder: "Briefly describe your relevant experience...", type: "textarea" },
+      { key: "Experience Summary", label: "Your Experience (PDF)", placeholder: "Upload your resume or experience PDF", type: "pdf" },
     ]}
   />
 );

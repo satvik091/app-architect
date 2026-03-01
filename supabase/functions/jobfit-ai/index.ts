@@ -45,6 +45,16 @@ Format clearly with section headers.`,
 - Skill building
 - Rest and reflection
 Include specific time allocations and actionable tasks for each day. Format with day headers.`,
+
+  "resume-rank": `You are an expert recruiter and resume analyst. You are given a job description and multiple resumes. Your task is to rank the resumes from best to worst fit for the job description. For each resume:
+- Provide a rank number
+- The candidate's name (inferred from the resume)
+- A similarity/fit score out of 100
+- Key matching skills and qualifications
+- Key missing skills or gaps
+- A brief justification for the ranking
+
+Present results as a clear ranked table/list, starting with the best match. At the end, provide a summary of what made the top candidates stand out.`,
 };
 
 serve(async (req) => {

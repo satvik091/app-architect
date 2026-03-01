@@ -3,11 +3,11 @@ import ToolPage from "@/components/ToolPage";
 const JDAligner = () => (
   <ToolPage
     title="JD Aligner"
-    description="Match your resume against a job description to get alignment scores and improvement suggestions."
+    description="Upload your resume and job description PDFs to get alignment scores and improvement suggestions."
     toolType="jd-align"
     inputFields={[
-      { key: "Resume", label: "Your Resume", placeholder: "Paste your resume text...", type: "textarea" },
-      { key: "Job Description", label: "Job Description", placeholder: "Paste the job description...", type: "textarea" },
+      { key: "Resume", label: "Your Resume (PDF)", placeholder: "Upload your resume PDF", type: "pdf" },
+      { key: "Job Description", label: "Job Description (PDF)", placeholder: "Upload the job description PDF", type: "pdf" },
     ]}
   />
 );
