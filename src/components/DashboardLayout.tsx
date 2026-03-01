@@ -12,7 +12,7 @@ const navItems = [
   { icon: Linkedin, label: "LinkedIn", href: "/tools/linkedin" },
   { icon: Calendar, label: "Planner", href: "/tools/planner" },
   { icon: BarChart3, label: "Resume Ranker", href: "/tools/resume-ranker"),
-  { icon: Archive, label: "Saved", href: "/saved" },
+  { icon: Archive, label: "Saved", href: "/saved" ),
 ];
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
