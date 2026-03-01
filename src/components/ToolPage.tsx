@@ -4,15 +4,23 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import PdfUpload from "@/components/PdfUpload";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useToast } from "@/hooks/use-toast";
 import { streamAI } from "@/lib/ai-stream";
+
+export interface InputField {
+  key: string;
+  label: string;
+  placeholder: string;
+  type: "input" | "textarea" | "pdf" | "pdf-multiple";
+}
 
 interface ToolPageProps {
   title: string;
   description: string;
   toolType: string;
-  inputFields: { key: string; label: string; placeholder: string; type: "input" | "textarea" }[];
+  inputFields: InputField[];
 }
 
 const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) => {
@@ -63,18 +71,46 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="space-y-4">
-            {inputFields.map((field) =>
-              field.type === "input" ? (
-                <div key={field.key}>
-                  <label className="text-sm font-medium text-foreground mb-1.5 block">{field.label}</label>
-                  <Input
+            {inputFields.map((field) => {
+              if (field.type === "pdf") {
+                return (
+                  <PdfUpload
+                    key={field.key}
+                    label={field.label}
                     placeholder={field.placeholder}
-                    value={inputs[field.key] || ""}
-                    onChange={(e) => setInputs((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                    className="bg-card border-border"
+                    onTextExtracted={(text) => setInputs((prev) => ({ ...prev, [field.key]: text }))}
                   />
-                </div>
-              ) : (
+                );
+              }
+              if (field.type === "pdf-multiple") {
+                return (
+                  <PdfUpload
+                    key={field.key}
+                    label={field.label}
+                    placeholder={field.placeholder}
+                    multiple
+                    onTextExtracted={(text) => setInputs((prev) => ({ ...prev, [field.key]: text }))}
+                    onMultipleExtracted={(results) => {
+                      const combined = results.map((r, i) => `--- Resume ${i + 1}: ${r.name} ---\n${r.text}`).join("\n\n");
+                      setInputs((prev) => ({ ...prev, [field.key]: combined }));
+                    }}
+                  />
+                );
+              }
+              if (field.type === "input") {
+                return (
+                  <div key={field.key}>
+                    <label className="text-sm font-medium text-foreground mb-1.5 block">{field.label}</label>
+                    <Input
+                      placeholder={field.placeholder}
+                      value={inputs[field.key] || ""}
+                      onChange={(e) => setInputs((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                      className="bg-card border-border"
+                    />
+                  </div>
+                );
+              }
+              return (
                 <div key={field.key}>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{field.label}</label>
                   <Textarea
@@ -84,8 +120,8 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
                     className="bg-card border-border min-h-[250px] resize-none"
                   />
                 </div>
-              )
-            )}
+              );
+            })}
             <Button onClick={handleGenerate} disabled={loading} className="w-full shadow-glow">
               {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Generating...</> : "Generate"}
             </Button>
