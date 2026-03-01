@@ -11,8 +11,8 @@ const navItems = [
   { icon: Mail, label: "Cover Letter", href: "/tools/cover-letter" },
   { icon: Linkedin, label: "LinkedIn", href: "/tools/linkedin" },
   { icon: Calendar, label: "Planner", href: "/tools/planner" },
-  { icon: BarChart3, label: "Resume Ranker", href: "/tools/resume-ranker"),
-  { icon: Archive, label: "Saved", href: "/saved" ),
+  { icon: BarChart3, label: "Resume Ranker", href: "/tools/resume-ranker"},
+  { icon: Archive, label: "Saved", href: "/saved" },
 ];
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
