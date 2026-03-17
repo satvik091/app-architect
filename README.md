@@ -1,73 +1,52 @@
-# Welcome to your Lovable project
+# JobFit AI – Smart Career Tools
 
-## Project info
+AI-powered career toolkit that helps job seekers optimize resumes, align with job descriptions, prepare for interviews, and more.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Resume Optimizer** – Upload your resume (PDF) and get ATS optimization scores, keyword analysis, and rewritten bullet points.
+- **JD Aligner** – Compare your resume against a job description to find skill gaps and alignment scores.
+- **Interview Prep** – Generate 10 role-specific STAR-format interview questions with model answers.
+- **Cover Letter Generator** – Create tailored, compelling cover letters from your resume and a job description.
+- **LinkedIn Optimizer** – Get optimized headlines, About sections, and skill recommendations for your LinkedIn profile.
+- **Job Search Planner** – Generate a structured 7-day job search action plan.
+- **Resume Ranker** – Upload multiple resumes and a job description to rank candidates by fit score.
+- **Saved Documents** – Save, view, and manage all AI-generated outputs.
+- **PDF Export** – Download any generated result as a text file.
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend:** Lovable Cloud (Supabase) – authentication, database, edge functions
+- **AI:** Google Gemini via Lovable AI gateway (streaming responses)
+- **PDF Parsing:** pdfjs-dist (client-side text extraction)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Getting Started
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── components/       # Reusable UI components (PdfUpload, ToolPage, DashboardLayout)
+├── contexts/         # Auth context
+├── hooks/            # Custom hooks
+├── lib/              # Utilities (PDF parsing, AI streaming, helpers)
+├── pages/            # Route pages (Auth, Dashboard, tools/*)
+│   └── tools/        # Individual AI tool pages
+└── integrations/     # Supabase client & types
 
-**Use GitHub Codespaces**
+supabase/
+└── functions/
+    └── jobfit-ai/    # Edge function handling all AI tool requests
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deployment
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Open [Lovable](https://lovable.dev) and click **Share → Publish**.
