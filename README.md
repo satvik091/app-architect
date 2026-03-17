@@ -49,4 +49,4 @@ supabase/
 
 ## Deployment
 
-Open [Lovable](https://lovable.dev) and click **Share → Publish**.
+[Open [JOBFIT ATS](https://lovable.dev) and click **Share → Publish**.](https://jobfitats.netlify.app/)
