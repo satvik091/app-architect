@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import PdfUpload from "@/components/PdfUpload";
 import DashboardLayout from "@/components/DashboardLayout";
+import AnalyticsCharts from "@/components/AnalyticsCharts";
 import { useToast } from "@/hooks/use-toast";
 import { streamAI } from "@/lib/ai-stream";
 import { supabase } from "@/integrations/supabase/client";
@@ -178,7 +179,10 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
               )}
             </div>
             {result ? (
-              <div className="whitespace-pre-wrap text-sm text-secondary-foreground leading-relaxed">{result}</div>
+              <div>
+                <AnalyticsCharts toolType={toolType} text={result} />
+                <div className="whitespace-pre-wrap text-sm text-secondary-foreground leading-relaxed">{result}</div>
+              </div>
             ) : (
               <div className="flex items-center justify-center h-[300px] text-muted-foreground text-sm">
                 {loading ? "Processing..." : "Results will appear here"}
