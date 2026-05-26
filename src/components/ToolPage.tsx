@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Loader2, Copy, Check, Save, Download } from "lucide-react";
+import { ArrowLeft, Loader2, Copy, Check, Save, Download, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -91,18 +91,18 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl">
+      <div className="max-w-6xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Dashboard
         </Link>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl font-display font-bold text-foreground mb-2">{title}</h1>
           <p className="text-muted-foreground">{description}</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="space-y-4">
+        <div className="glass-card rounded-xl p-5 mb-6">
+          <div className={`grid gap-4 ${inputFields.length > 1 ? "md:grid-cols-2" : "grid-cols-1"}`}>
             {inputFields.map((field) => {
               if (field.type === "pdf") {
                 return (
@@ -149,46 +149,58 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
                     placeholder={field.placeholder}
                     value={inputs[field.key] || ""}
                     onChange={(e) => setInputs((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                    className="bg-card border-border min-h-[250px] resize-none"
+                    className="bg-card border-border min-h-[150px] resize-none"
                   />
                 </div>
               );
             })}
-            <Button onClick={handleGenerate} disabled={loading} className="w-full shadow-glow">
-              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Generating...</> : "Generate"}
-            </Button>
           </div>
+          <Button onClick={handleGenerate} disabled={loading} className="w-full shadow-glow mt-4">
+            {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Generating...</> : "Generate Analysis"}
+          </Button>
+        </div>
 
-          <div className="glass-card rounded-xl p-5 relative">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-display font-semibold text-foreground text-sm">AI Output</h3>
-              {result && (
-                <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="sm" onClick={handleCopy} className="h-8">
-                    {copied ? <Check className="w-3.5 h-3.5 mr-1" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
-                    {copied ? "Copied" : "Copy"}
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={handleSave} disabled={saving} className="h-8">
-                    {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-1" />}
-                    Save
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={handleDownload} className="h-8">
-                    <Download className="w-3.5 h-3.5 mr-1" /> Download
-                  </Button>
-                </div>
-              )}
+        <div className="rounded-xl border border-border/50 bg-card/30 p-5">
+          <div className="flex items-center justify-between mb-4 pb-4 border-b border-border/40">
+            <div>
+              <h3 className="font-display font-semibold text-foreground">AI Analysis Report</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Structured insights, scores & visual analytics</p>
             </div>
-            {result ? (
-              <div>
-                <AnalyticsCharts toolType={toolType} text={result} />
-                <div className="whitespace-pre-wrap text-sm text-secondary-foreground leading-relaxed">{result}</div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-[300px] text-muted-foreground text-sm">
-                {loading ? "Processing..." : "Results will appear here"}
+            {result && (
+              <div className="flex items-center gap-1">
+                <Button variant="ghost" size="sm" onClick={handleCopy} className="h-8">
+                  {copied ? <Check className="w-3.5 h-3.5 mr-1" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
+                  {copied ? "Copied" : "Copy"}
+                </Button>
+                <Button variant="ghost" size="sm" onClick={handleSave} disabled={saving} className="h-8">
+                  {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-1" />}
+                  Save
+                </Button>
+                <Button variant="ghost" size="sm" onClick={handleDownload} className="h-8">
+                  <Download className="w-3.5 h-3.5 mr-1" /> Download
+                </Button>
               </div>
             )}
           </div>
+          {result ? (
+            <ResultRenderer toolType={toolType} text={result} />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[320px] text-muted-foreground text-sm gap-2">
+              {loading ? (
+                <>
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                  <span>Analyzing your inputs…</span>
+                </>
+              ) : (
+                <>
+                  <div className="w-12 h-12 rounded-xl border border-dashed border-border/60 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-muted-foreground/60" />
+                  </div>
+                  <span>Your AI analysis will appear here</span>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>
