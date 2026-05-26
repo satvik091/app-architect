@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import PdfUpload from "@/components/PdfUpload";
 import DashboardLayout from "@/components/DashboardLayout";
-import AnalyticsCharts from "@/components/AnalyticsCharts";
+import ResultRenderer from "@/components/ResultRenderer";
 import { useToast } from "@/hooks/use-toast";
 import { streamAI } from "@/lib/ai-stream";
 import { supabase } from "@/integrations/supabase/client";
