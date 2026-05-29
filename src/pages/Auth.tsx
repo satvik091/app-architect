@@ -80,6 +80,26 @@ const Auth = () => {
             {isLogin ? "Welcome back" : "Create your account"}
           </h2>
 
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleGoogle}
+            disabled={googleLoading || loading}
+            className="w-full mb-4 bg-card hover:bg-secondary border-border"
+          >
+            {googleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <GoogleIcon />}
+            Continue with Google
+          </Button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-border" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-card px-2 text-muted-foreground">or continue with email</span>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="text-sm font-medium text-foreground mb-1.5 block">Email</label>
