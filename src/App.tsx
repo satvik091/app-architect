@@ -32,6 +32,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/tools/resume" element={<ProtectedRoute><ResumeOptimizer /></ProtectedRoute>} />
             <Route path="/tools/jd-align" element={<ProtectedRoute><JDAligner /></ProtectedRoute>} />
