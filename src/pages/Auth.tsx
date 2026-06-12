@@ -3,25 +3,29 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Sparkles, Loader2, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { friendlyAuthError } from "@/lib/auth-errors";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg(null);
 
     if (isLogin) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
-        toast({ title: "Login failed", description: error.message, variant: "destructive" });
+        setErrorMsg(friendlyAuthError(error.message, "signin"));
       } else {
         navigate("/dashboard");
       }
@@ -32,9 +36,9 @@ const Auth = () => {
         options: { emailRedirectTo: window.location.origin },
       });
       if (error) {
-        toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+        setErrorMsg(friendlyAuthError(error.message, "signup"));
       } else {
-        toast({ title: "Congratulations! Happy Journey.", description: "Click on the Login Button to test ur application." });
+        toast({ title: "Account created", description: "Check your email to confirm, then sign in." });
       }
     }
     setLoading(false);
@@ -54,6 +58,14 @@ const Auth = () => {
           <h2 className="font-display text-xl font-bold text-foreground text-center mb-6">
             {isLogin ? "Welcome back" : "Create your account"}
           </h2>
+
+          {errorMsg && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="w-4 h-4" />
+              <AlertTitle>{isLogin ? "Sign in failed" : "Sign up failed"}</AlertTitle>
+              <AlertDescription>{errorMsg}</AlertDescription>
+            </Alert>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -94,7 +106,7 @@ const Auth = () => {
 
           <p className="text-sm text-muted-foreground text-center mt-4">
             {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-            <button onClick={() => setIsLogin(!isLogin)} className="text-primary hover:underline">
+            <button type="button" onClick={() => { setIsLogin(!isLogin); setErrorMsg(null); }} className="text-primary hover:underline">
               {isLogin ? "Sign up" : "Sign in"}
             </button>
           </p>

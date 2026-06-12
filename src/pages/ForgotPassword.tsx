@@ -3,24 +3,28 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Loader2, ArrowLeft } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Sparkles, Loader2, ArrowLeft, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { friendlyAuthError } from "@/lib/auth-errors";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg(null);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     setLoading(false);
     if (error) {
-      toast({ title: "Failed to send", description: error.message, variant: "destructive" });
+      setErrorMsg(friendlyAuthError(error.message, "reset"));
     } else {
       setSent(true);
       toast({ title: "Email sent", description: "Check your inbox for the reset link." });
@@ -44,6 +48,14 @@ const ForgotPassword = () => {
           <p className="text-sm text-muted-foreground text-center mb-6">
             {sent ? "Check your email for a reset link." : "Enter your email to receive a reset link."}
           </p>
+
+          {errorMsg && !sent && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="w-4 h-4" />
+              <AlertTitle>Could not send reset link</AlertTitle>
+              <AlertDescription>{errorMsg}</AlertDescription>
+            </Alert>
+          )}
 
           {!sent && (
             <form onSubmit={handleSubmit} className="space-y-4">
