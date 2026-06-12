@@ -63,6 +63,13 @@ const ResetPassword = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {errorMsg && (
+                <Alert variant="destructive">
+                  <AlertCircle className="w-4 h-4" />
+                  <AlertTitle>Couldn't update password</AlertTitle>
+                  <AlertDescription>{errorMsg}</AlertDescription>
+                </Alert>
+              )}
               <Input
                 type="password"
                 placeholder="New password"
