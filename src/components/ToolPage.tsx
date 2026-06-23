@@ -1,14 +1,21 @@
 import { useState } from "react";
-import { ArrowLeft, Loader2, Copy, Check, Save, Download, Sparkles } from "lucide-react";
+import { ArrowLeft, Loader2, Copy, Check, Save, Download, Sparkles, ChevronDown, FileText, FileType2, FileCode } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import PdfUpload from "@/components/PdfUpload";
 import DashboardLayout from "@/components/DashboardLayout";
 import ResultRenderer from "@/components/ResultRenderer";
 import { useToast } from "@/hooks/use-toast";
 import { streamAI } from "@/lib/ai-stream";
+import { downloadPdf, downloadDocx } from "@/lib/export-utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
