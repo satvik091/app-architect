@@ -85,15 +85,35 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
     );
   };
 
-  const handleDownload = () => {
+  const downloadBase = `${toolType}-${Date.now()}`;
+
+  const handleDownloadTxt = () => {
     if (!result) return;
     const blob = new Blob([result], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${toolType}-${Date.now()}.txt`;
+    a.download = `${downloadBase}.txt`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadPdf = () => {
+    if (!result) return;
+    try {
+      downloadPdf(result, `${downloadBase}.pdf`, title);
+    } catch (e) {
+      toast({ title: "PDF export failed", description: e instanceof Error ? e.message : "Unknown error", variant: "destructive" });
+    }
+  };
+
+  const handleDownloadDocx = async () => {
+    if (!result) return;
+    try {
+      await downloadDocx(result, `${downloadBase}.docx`, title);
+    } catch (e) {
+      toast({ title: "DOCX export failed", description: e instanceof Error ? e.message : "Unknown error", variant: "destructive" });
+    }
   };
 
   return (
