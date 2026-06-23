@@ -17,6 +17,16 @@ import CoverLetter from "./pages/tools/CoverLetter";
 import LinkedInOptimizer from "./pages/tools/LinkedInOptimizer";
 import JobPlanner from "./pages/tools/JobPlanner";
 import ResumeRanker from "./pages/tools/ResumeRanker";
+import ResumeTailor from "./pages/tools/ResumeTailor";
+import BulletImprover from "./pages/tools/BulletImprover";
+import ResumeSummary from "./pages/tools/ResumeSummary";
+import ResumeATS from "./pages/tools/ResumeATS";
+import CareerChange from "./pages/tools/CareerChange";
+import BulletCreator from "./pages/tools/BulletCreator";
+import ResumeSeniorize from "./pages/tools/ResumeSeniorize";
+import EntryResume from "./pages/tools/EntryResume";
+import ResumeLayout from "./pages/tools/ResumeLayout";
+import MasterResume from "./pages/tools/MasterResume";
 import SavedDocuments from "./pages/SavedDocuments";
 import NotFound from "./pages/NotFound";
 
@@ -42,6 +52,16 @@ const App = () => (
             <Route path="/tools/linkedin" element={<ProtectedRoute><LinkedInOptimizer /></ProtectedRoute>} />
             <Route path="/tools/planner" element={<ProtectedRoute><JobPlanner /></ProtectedRoute>} />
             <Route path="/tools/resume-ranker" element={<ProtectedRoute><ResumeRanker /></ProtectedRoute>} />
+            <Route path="/tools/resume-tailor" element={<ProtectedRoute><ResumeTailor /></ProtectedRoute>} />
+            <Route path="/tools/bullet-improve" element={<ProtectedRoute><BulletImprover /></ProtectedRoute>} />
+            <Route path="/tools/resume-summary" element={<ProtectedRoute><ResumeSummary /></ProtectedRoute>} />
+            <Route path="/tools/resume-ats" element={<ProtectedRoute><ResumeATS /></ProtectedRoute>} />
+            <Route path="/tools/career-change" element={<ProtectedRoute><CareerChange /></ProtectedRoute>} />
+            <Route path="/tools/bullet-create" element={<ProtectedRoute><BulletCreator /></ProtectedRoute>} />
+            <Route path="/tools/resume-seniorize" element={<ProtectedRoute><ResumeSeniorize /></ProtectedRoute>} />
+            <Route path="/tools/entry-resume" element={<ProtectedRoute><EntryResume /></ProtectedRoute>} />
+            <Route path="/tools/resume-layout" element={<ProtectedRoute><ResumeLayout /></ProtectedRoute>} />
+            <Route path="/tools/master-resume" element={<ProtectedRoute><MasterResume /></ProtectedRoute>} />
             <Route path="/saved" element={<ProtectedRoute><SavedDocuments /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
