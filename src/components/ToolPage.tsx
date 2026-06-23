@@ -1,14 +1,21 @@
 import { useState } from "react";
-import { ArrowLeft, Loader2, Copy, Check, Save, Download, Sparkles } from "lucide-react";
+import { ArrowLeft, Loader2, Copy, Check, Save, Download, Sparkles, ChevronDown, FileText, FileType2, FileCode } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import PdfUpload from "@/components/PdfUpload";
 import DashboardLayout from "@/components/DashboardLayout";
 import ResultRenderer from "@/components/ResultRenderer";
 import { useToast } from "@/hooks/use-toast";
 import { streamAI } from "@/lib/ai-stream";
+import { downloadPdf, downloadDocx } from "@/lib/export-utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -78,15 +85,35 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
     );
   };
 
-  const handleDownload = () => {
+  const downloadBase = `${toolType}-${Date.now()}`;
+
+  const handleDownloadTxt = () => {
     if (!result) return;
     const blob = new Blob([result], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${toolType}-${Date.now()}.txt`;
+    a.download = `${downloadBase}.txt`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadPdf = () => {
+    if (!result) return;
+    try {
+      downloadPdf(result, `${downloadBase}.pdf`, title);
+    } catch (e) {
+      toast({ title: "PDF export failed", description: e instanceof Error ? e.message : "Unknown error", variant: "destructive" });
+    }
+  };
+
+  const handleDownloadDocx = async () => {
+    if (!result) return;
+    try {
+      await downloadDocx(result, `${downloadBase}.docx`, title);
+    } catch (e) {
+      toast({ title: "DOCX export failed", description: e instanceof Error ? e.message : "Unknown error", variant: "destructive" });
+    }
   };
 
   return (
@@ -176,9 +203,25 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
                   {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-1" />}
                   Save
                 </Button>
-                <Button variant="ghost" size="sm" onClick={handleDownload} className="h-8">
-                  <Download className="w-3.5 h-3.5 mr-1" /> Download
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-8">
+                      <Download className="w-3.5 h-3.5 mr-1" /> Download
+                      <ChevronDown className="w-3 h-3 ml-1 opacity-70" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={handleDownloadPdf}>
+                      <FileType2 className="w-4 h-4 mr-2" /> PDF (.pdf)
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDownloadDocx}>
+                      <FileText className="w-4 h-4 mr-2" /> Word (.docx)
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDownloadTxt}>
+                      <FileCode className="w-4 h-4 mr-2" /> Plain text (.txt)
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
           </div>
