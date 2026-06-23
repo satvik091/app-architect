@@ -203,9 +203,25 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
                   {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-1" />}
                   Save
                 </Button>
-                <Button variant="ghost" size="sm" onClick={handleDownload} className="h-8">
-                  <Download className="w-3.5 h-3.5 mr-1" /> Download
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-8">
+                      <Download className="w-3.5 h-3.5 mr-1" /> Download
+                      <ChevronDown className="w-3 h-3 ml-1 opacity-70" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={handleDownloadPdf}>
+                      <FileType2 className="w-4 h-4 mr-2" /> PDF (.pdf)
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDownloadDocx}>
+                      <FileText className="w-4 h-4 mr-2" /> Word (.docx)
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDownloadTxt}>
+                      <FileCode className="w-4 h-4 mr-2" /> Plain text (.txt)
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
           </div>
