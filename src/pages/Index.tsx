@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import {
   FileText, Target, MessageSquare, Mail, Linkedin, Calendar, ListOrdered,
   ArrowRight, Sparkles, Zap, Shield, Star, CheckCircle2, TrendingUp, Users, Award,
+  Wand2, ListChecks, AlignLeft, ScanSearch, Repeat, PenLine, Crown, GraduationCap, LayoutTemplate, Library,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 
-const tools = [
+const coreTools = [
   { icon: FileText, title: "Resume Optimizer", description: "ATS-optimized resumes with measurable achievements and keyword enhancements.", href: "/tools/resume", accent: "from-primary/20 to-accent/10" },
   { icon: Target, title: "JD Aligner", description: "Match your resume to job descriptions with visual alignment scores.", href: "/tools/jd-align", accent: "from-accent/20 to-primary/10" },
   { icon: ListOrdered, title: "Resume Ranker", description: "Rank multiple candidates against any JD with defensible fit scores.", href: "/tools/resume-ranker", accent: "from-primary/20 to-accent/10" },
@@ -16,17 +17,30 @@ const tools = [
   { icon: Calendar, title: "Job Search Planner", description: "Structured 7-day plans balancing applications, networking, and prep.", href: "/tools/planner", accent: "from-primary/20 to-accent/10" },
 ];
 
+const resumeTools = [
+  { icon: Wand2, title: "Tailor My Resume", description: "Rewrite your resume for a target role using a JD.", href: "/tools/resume-tailor", accent: "from-primary/20 to-accent/10" },
+  { icon: ListChecks, title: "Improve Resume Bullets", description: "Turn weak bullets into achievement-focused statements.", href: "/tools/bullet-improve", accent: "from-accent/20 to-primary/10" },
+  { icon: AlignLeft, title: "Build a Resume Summary", description: "Short, standard, and ATS-optimized summaries.", href: "/tools/resume-summary", accent: "from-primary/20 to-accent/10" },
+  { icon: ScanSearch, title: "Optimize Resume for ATS", description: "Find gaps and get an ATS-friendly rewrite.", href: "/tools/resume-ats", accent: "from-accent/20 to-primary/10" },
+  { icon: Repeat, title: "Rewrite for Career Change", description: "Reposition transferable skills toward a new role.", href: "/tools/career-change", accent: "from-primary/20 to-accent/10" },
+  { icon: PenLine, title: "Create Resume Bullets", description: "Turn raw work notes into 5–7 strong bullets.", href: "/tools/bullet-create", accent: "from-accent/20 to-primary/10" },
+  { icon: Crown, title: "Sound More Senior", description: "Reframe your resume for a senior-level role.", href: "/tools/resume-seniorize", accent: "from-primary/20 to-accent/10" },
+  { icon: GraduationCap, title: "Limited-Experience Resume", description: "Strong entry-level resume built around education and projects.", href: "/tools/entry-resume", accent: "from-accent/20 to-primary/10" },
+  { icon: LayoutTemplate, title: "Improve Resume Layout", description: "Recruiter-friendly review of structure and section order.", href: "/tools/resume-layout", accent: "from-primary/20 to-accent/10" },
+  { icon: Library, title: "Create a Master Resume", description: "Comprehensive resume + per-application tailoring guide.", href: "/tools/master-resume", accent: "from-accent/20 to-primary/10" },
+];
+
 const features = [
   { icon: Sparkles, title: "AI-Powered", description: "Advanced LLMs tuned for career outcomes" },
   { icon: Zap, title: "Instant Results", description: "Streamed output in seconds, not hours" },
   { icon: Shield, title: "ATS-Optimized", description: "Pass tracking systems with confidence" },
-  { icon: TrendingUp, title: "Visual Analytics", description: "See alignment & ranking with charts" },
+  { icon: TrendingUp, title: "PDF & DOCX Export", description: "Download polished outputs in one click" },
 ];
 
 const stats = [
   { value: "50k+", label: "Resumes Optimized" },
   { value: "92%", label: "Interview Rate" },
-  { value: "7", label: "AI Tools" },
+  { value: "17", label: "AI Tools" },
   { value: "4.9★", label: "User Rating" },
 ];
 
