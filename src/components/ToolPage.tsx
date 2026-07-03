@@ -210,15 +210,15 @@ const ToolPage = ({ title, description, toolType, inputFields, resultHeading, re
             })}
           </div>
           <Button onClick={handleGenerate} disabled={loading} className="w-full shadow-glow mt-4">
-            {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Generating...</> : "Generate Analysis"}
+            {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Generating...</> : ctaLabel}
           </Button>
         </div>
 
         <div className="rounded-xl border border-border/50 bg-card/30 p-5">
           <div className="flex items-center justify-between mb-4 pb-4 border-b border-border/40">
             <div>
-              <h3 className="font-display font-semibold text-foreground">AI Analysis Report</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Structured insights, scores & visual analytics</p>
+              <h3 className="font-display font-semibold text-foreground">{heading}</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>
             </div>
             {result && (
               <div className="flex items-center gap-1">
