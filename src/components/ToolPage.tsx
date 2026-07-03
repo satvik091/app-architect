@@ -31,9 +31,36 @@ interface ToolPageProps {
   description: string;
   toolType: string;
   inputFields: InputField[];
+  resultHeading?: string;
+  resultSubheading?: string;
+  generateLabel?: string;
 }
 
-const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) => {
+const RESULT_META: Record<string, { heading: string; sub: string; cta?: string }> = {
+  "resume-optimize": { heading: "Optimized Resume", sub: "ATS-ready rewrite with keyword and impact upgrades", cta: "Optimize Resume" },
+  "jd-align": { heading: "JD Alignment Report", sub: "Match score, keyword gaps & tailoring suggestions", cta: "Align Resume" },
+  "resume-ranker": { heading: "Candidate Ranking", sub: "Ranked shortlist with fit scores and rationale", cta: "Rank Resumes" },
+  "interview": { heading: "Interview Prep Kit", sub: "Role-specific questions with STAR-format answers", cta: "Generate Questions" },
+  "cover-letter": { heading: "Tailored Cover Letter", sub: "3-paragraph letter aligned to the job description", cta: "Write Cover Letter" },
+  "linkedin": { heading: "LinkedIn Profile Upgrade", sub: "Headline, About & skills tuned for recruiter search", cta: "Optimize Profile" },
+  "planner": { heading: "7-Day Job Search Plan", sub: "Daily actions across applications, networking & prep", cta: "Build Plan" },
+  "resume-tailor": { heading: "Tailored Resume", sub: "Rewritten for the target role with ATS keywords", cta: "Tailor Resume" },
+  "bullet-improve": { heading: "Improved Bullets", sub: "Achievement-focused rewrites with metric prompts", cta: "Improve Bullets" },
+  "resume-summary": { heading: "Resume Summary", sub: "Short, standard & ATS-optimized summary variants", cta: "Write Summary" },
+  "resume-ats": { heading: "ATS Optimization Report", sub: "Gap analysis with an ATS-friendly rewrite", cta: "Run ATS Check" },
+  "career-change": { heading: "Career-Change Resume", sub: "Transferable skills repositioned for the new role", cta: "Rewrite for New Role" },
+  "bullet-create": { heading: "Generated Resume Bullets", sub: "5–7 strong bullets built from your raw notes", cta: "Create Bullets" },
+  "resume-seniorize": { heading: "Senior-Level Resume", sub: "Reframed with scope, ownership & strategic impact", cta: "Level Up Resume" },
+  "entry-resume": { heading: "Entry-Level Resume", sub: "Built around education, projects & transferable skills", cta: "Build Resume" },
+  "resume-layout": { heading: "Layout & Structure Review", sub: "Recruiter-friendly section order and formatting fixes", cta: "Review Layout" },
+  "master-resume": { heading: "Master Resume", sub: "Comprehensive resume + per-application tailoring guide", cta: "Build Master Resume" },
+};
+
+const ToolPage = ({ title, description, toolType, inputFields, resultHeading, resultSubheading, generateLabel }: ToolPageProps) => {
+  const meta = RESULT_META[toolType];
+  const heading = resultHeading ?? meta?.heading ?? "Result";
+  const sub = resultSubheading ?? meta?.sub ?? "Structured output for your request";
+  const ctaLabel = generateLabel ?? meta?.cta ?? "Generate";
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -183,15 +210,15 @@ const ToolPage = ({ title, description, toolType, inputFields }: ToolPageProps) 
             })}
           </div>
           <Button onClick={handleGenerate} disabled={loading} className="w-full shadow-glow mt-4">
-            {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Generating...</> : "Generate Analysis"}
+            {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Generating...</> : ctaLabel}
           </Button>
         </div>
 
         <div className="rounded-xl border border-border/50 bg-card/30 p-5">
           <div className="flex items-center justify-between mb-4 pb-4 border-b border-border/40">
             <div>
-              <h3 className="font-display font-semibold text-foreground">AI Analysis Report</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Structured insights, scores & visual analytics</p>
+              <h3 className="font-display font-semibold text-foreground">{heading}</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>
             </div>
             {result && (
               <div className="flex items-center gap-1">
