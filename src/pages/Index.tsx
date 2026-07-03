@@ -165,11 +165,13 @@ const Index = () => {
               Every Stage of Your <span className="text-gradient">Job Search</span>
             </h2>
             <p className="text-muted-foreground">
-              Seven AI-powered tools that work together — from resume to offer.
+              Seven core AI tools — plus a ten-tool Resume Suite that rewrites, tailors, and levels up every part of your resume.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {tools.map((tool, i) => (
+
+          <h3 className="text-sm font-display font-semibold text-muted-foreground uppercase tracking-wider mb-5">Core Tools</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
+            {coreTools.map((tool, i) => (
               <Link
                 key={tool.title}
                 to={tool.href}
@@ -182,6 +184,33 @@ const Index = () => {
                     <tool.icon className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <h3 className="font-display text-lg font-semibold text-foreground mb-2">{tool.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{tool.description}</p>
+                  <span className="text-sm text-primary font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                    Try it <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-baseline justify-between mb-5">
+            <h3 className="text-sm font-display font-semibold text-muted-foreground uppercase tracking-wider">Resume Suite</h3>
+            <span className="text-xs text-muted-foreground">10 focused tools</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {resumeTools.map((tool, i) => (
+              <Link
+                key={tool.title}
+                to={tool.href}
+                className="group relative glass-card rounded-xl p-6 shadow-card hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 animate-fade-in overflow-hidden"
+                style={{ animationDelay: `${0.03 * i}s` }}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${tool.accent} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                <div className="relative">
+                  <div className="w-11 h-11 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-glow group-hover:scale-110 transition-transform">
+                    <tool.icon className="w-5 h-5 text-primary-foreground" />
+                  </div>
+                  <h3 className="font-display text-base font-semibold text-foreground mb-2">{tool.title}</h3>
                   <p className="text-sm text-muted-foreground mb-4">{tool.description}</p>
                   <span className="text-sm text-primary font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                     Try it <ArrowRight className="w-3.5 h-3.5" />
